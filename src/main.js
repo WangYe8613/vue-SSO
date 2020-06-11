@@ -42,3 +42,7 @@ new Vue({
     i18n,
     render: h => h(App)
 }).$mount('#app');
+
+var axios = require('axios')
+axios.defaults.baseURL = "http://47.93.44.20:8090"
+Vue.prototype.$axios = axios

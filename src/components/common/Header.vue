@@ -35,8 +35,7 @@
 </template>
 <script>
 import bus from '../common/bus';
-var axios = require('axios')
-axios.defaults.baseURL = "http://47.93.44.20:8090"
+
 export default {
     data() {
         return {
@@ -72,7 +71,7 @@ export default {
                 var token = this.getToken();
                 localStorage.removeItem(token);
 
-                axios({
+                this.$axios({
                     method: 'get', //请求方式
                     url: '/identity/signOut', //api对应url，要和后端设置的一致
                     params: { //传参

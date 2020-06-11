@@ -30,8 +30,7 @@
 </template>
 
 <script>
-    var axios = require('axios')
-    axios.defaults.baseURL = "http://47.93.44.20:8090"
+
 
     export default {
         data: function () {
@@ -46,13 +45,9 @@
                 },
             };
         },
-        mounted() {
-            var axios_1 = require('axios')
-            axios_1.defaults.baseURL = "http://localhost:8090"
-        },
         methods: {
             signIn() {
-                axios({
+                this.$axios({
                     method: 'get',                                      //请求方式
                     url: '/identity/signIn',                            //api对应url，要和后端设置的一致
                     params: {                                           //传参
@@ -85,7 +80,7 @@
                 });
             },
             register() {
-                axios({
+                this.$axios({
                     method: 'get',
                     url: '/identity/register',
                     params: {

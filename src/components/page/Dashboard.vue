@@ -12,10 +12,8 @@
 
 <script>
     import Schart from 'vue-schart';
-
     var hasToken = false;
-    var axios = require('axios')
-    axios.defaults.baseURL = "http://47.93.44.20:8090"
+
     export default {
         name: 'dashboard',
         data() {
@@ -92,7 +90,7 @@
                         name: 'login',
                     });
                 } else {
-                    axios({
+                    this.$axios({
                         method: 'get', //请求方式
                         url: '/authorization/validate', //api对应url，要和后端设置的一致
                         params: { //传参
