@@ -35,6 +35,7 @@
 </template>
 <script>
 import bus from '../common/bus';
+import {setCookie, getCookie, delCookie} from '../../assets/cookies'
 
 export default {
     data() {
@@ -46,29 +47,16 @@ export default {
     },
     computed: {
         username() {
-            var token = this.getToken();
+            var token = getCookie("authToken");
             let username = localStorage.getItem(token);
             return username ? username : this.defaultName;
         }
     },
     methods: {
-        getToken() {
-            var token = "";
-            var cookieArrary = document.cookie.split('; '); //切割
-            for (var i = 0; i < cookieArrary.length; i++) {
-                // indexOf返回某个指定的字符串值在字符串中首次出现的位置，用于判断是否包含子串"authToken"
-                var index = cookieArrary[i].indexOf("authToken");
-                if (index >= 0) {
-                    var token = cookieArrary[i].slice(index + "authToken=".length);
-                    break;
-                }
-            }
-            return token;
-        },
         // 用户名下拉菜单选择事件
         signOut(command) {
             if (command == 'loginout') {
-                var token = this.getToken();
+                var token = getCookie("authToken")
                 localStorage.removeItem(token);
 
                 this.$axios({
@@ -82,6 +70,7 @@ export default {
                     var responseCode = response.status; //返回对象
                     var responseMessage = response.data.message; //返回信息
                     if (responseCode == 200) {
+                        delCookie("authToken")
                         //退出成功，跳转登录
                         this.$router.push('/login');
                     } else {

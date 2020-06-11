@@ -30,7 +30,7 @@
 </template>
 
 <script>
-
+    import {setCookie, getCookie, delCookie} from '../../assets/cookies'
 
     export default {
         data: function () {
@@ -62,7 +62,9 @@
                     if (responseInventory !== null) {
                         token = responseInventory.token;
                     }
-                    document.cookie = "authToken=" + token;
+                    if (token != null) {
+                        setCookie("authToken", token, 3600)
+                    }
                     if (token != null) {
                         localStorage.setItem(token, this.param.username)
                         //校验成功，跳转主页

@@ -12,6 +12,7 @@
 
 <script>
     import Schart from 'vue-schart';
+    import {setCookie, getCookie, delCookie} from '../../assets/cookies'
     var hasToken = false;
 
     export default {
@@ -70,22 +71,9 @@
             Schart
         },
         methods: {
-            getToken() {
-                var token = "";
-                var cookieArrary = document.cookie.split('; '); //切割
-                for (var i = 0; i < cookieArrary.length; i++) {
-                    // indexOf返回某个指定的字符串值在字符串中首次出现的位置，用于判断是否包含子串"authToken"
-                    var index = cookieArrary[i].indexOf("authToken");
-                    if (index >= 0) {
-                        var token = cookieArrary[i].slice(index + "authToken=".length);
-                        break;
-                    }
-                }
-                return token;
-            },
             authorizationValidate() {
-                var token = this.getToken();
-                if (token == "") {
+                var token = getCookie("authToken")
+                if (token == "" || token == "null") {
                     this.$router.push({
                         name: 'login',
                     });
