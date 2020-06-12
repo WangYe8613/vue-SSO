@@ -23,7 +23,7 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="register()">注册</el-button>
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
+                <p class="login-tips">Tips : 默认用户名wy，密码123123</p>
             </el-form>
         </div>
     </div>
@@ -46,13 +46,14 @@
             };
         },
         methods: {
+            // 用户登录响应事件
             signIn() {
                 this.$axios({
                     method: 'get',                                      //请求方式
                     url: '/identity/signIn',                            //api对应url，要和后端设置的一致
                     params: {                                           //传参
-                        userName: this.param.username,
-                        password: this.param.password
+                        userName: this.param.username,                  // 从输入框获取用户名作为参数
+                        password: this.param.password                   // 从输入框获取密码作为参数
                     }
                 }).then(response => {                                   //获取http响应数据
                     var responseInventory = response.data.inventory;    //response.data对应后端服务返回的json类型数据
@@ -60,12 +61,13 @@
                     var responseMessage = response.data.message;
                     var token = null;
                     if (responseInventory !== null) {
+                        // 设置当前token为后端生成的token
                         token = responseInventory.token;
                     }
                     if (token != null) {
+                        // 将token设置到当前cookie中，默认有效1小时
                         setCookie("authToken", token, 3600)
-                    }
-                    if (token != null) {
+                        // 将当前用户名缓存起来，key是token，value是用户名，方便其他页面获取
                         localStorage.setItem(token, this.param.username)
                         //校验成功，跳转主页
                         this.$router.push({
@@ -76,11 +78,12 @@
                         //校验失败，提示用户信息有误
                         this.$message.info(responseMessage);
                     }
-                }).catch(error => {
+                }).catch(error => { // 捕获异常
                     this.$message.info("SSO服务无响应：" + error);
                     console.log(error);
                 });
             },
+            // 用户注册响应事件
             register() {
                 this.$axios({
                     method: 'get',
@@ -104,7 +107,7 @@
                         //校验失败，提示用户信息有误
                         this.$message.info(responseMessage);
                     }
-                }).catch(error => {
+                }).catch(error => { // 捕获异常
                     this.$message.info("SSO服务无响应：" + error);
                     console.log(error);
                 });

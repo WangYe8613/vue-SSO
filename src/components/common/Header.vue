@@ -17,6 +17,7 @@
 
                 <!-- 用户头像 -->
                 <div class="user-avator">
+                    <!-- 这里的图片路径设置的是相对路径 -->
                     <img src="../../assets/img/wy.jpg" />
                 </div>
                 <!-- 用户名下拉菜单 -->
@@ -42,24 +43,25 @@ export default {
         return {
             collapse: false,
             fullscreen: false,
-            defaultName: '王也',
+            defaultName: '王也',  // 默认名
         };
     },
     computed: {
         username() {
+            // 根据当前cookie中的token获取缓存中的用户名
             var token = getCookie("authToken");
             let username = localStorage.getItem(token);
+            // 如果缓存中没有该token对应的用户名，则使用默认名
             return username ? username : this.defaultName;
         }
     },
     methods: {
-        // 用户名下拉菜单选择事件
+        // 退出登录响应事件
         signOut(command) {
             if (command == 'loginout') {
                 var token = getCookie("authToken")
-                localStorage.removeItem(token);
 
-                this.$axios({
+                this.$axios({   //使用axios调用SSO后端服务接口
                     method: 'get', //请求方式
                     url: '/identity/signOut', //api对应url，要和后端设置的一致
                     params: { //传参
@@ -69,27 +71,30 @@ export default {
                     var responseInventory = response.data.inventory; //返回错误码
                     var responseCode = response.status; //返回对象
                     var responseMessage = response.data.message; //返回信息
-                    if (responseCode == 200) {
+                    if (responseCode == 200) {  // 后端退出登录成功成功
+                        // 从当前cookie中删除token，这一步非常重要，如果不做，就会导致url重定向死循环（这里的重定向不是下面重定向到/login，具体怎么回事讲解的时候再说）
                         delCookie("authToken")
-                        //退出成功，跳转登录
+                        // 从缓存中删除当前用户名
+                        localStorage.removeItem(token);
+                        //退出成功，重定向到登录页面
                         this.$router.push('/login');
                     } else {
                         //校验失败，提示用户信息有误
                         this.$message.info(responseMessage);
                     }
-                }).catch(error => {
+                }).catch(error => { // 捕获异常
                     this.$message.info("SSO服务无响应：" + error);
                     console.log(error);
                 });
             }
 
         },
-        // 侧边栏折叠
+        // 侧边栏折叠，无需关心
         collapseChage() {
             this.collapse = !this.collapse;
             bus.$emit('collapse', this.collapse);
         },
-        // 全屏事件
+        // 全屏事件，无需关心
         handleFullScreen() {
             let element = document.documentElement;
             if (this.fullscreen) {
