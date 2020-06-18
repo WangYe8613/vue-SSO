@@ -20,6 +20,18 @@ export default new Router({
                     path: '/dashboard*',    // 设置url为/dashboard开头时，对应Dashboard.vue页面
                     component: () => import('../components/page/Dashboard.vue'),
                     meta: { title: '系统首页' }
+                },
+                {
+                    // markdown组件
+                    path: '/markdown',
+                    component: () => import('../components/page/Markdown.vue'),
+                    meta: { title: 'markdown编辑器' }
+                },
+                {
+                    // article组件
+                    path: '/article',
+                    component: () => import('../components/page/article/Article.vue'),
+                    meta: { title: '帖子' }
                 }
             ]
         },
@@ -31,8 +43,7 @@ export default new Router({
         {
             path: '*',              // 设置url为/*时，对应404页面
             redirect: '/404'
-        }
-        ,
+        },
         {
             path: '/callback*',     // 设置url为/dashboard开头时，不对应任何页面，这里只是提供这么一个url，方便在main.js里做"路由的预判断"
         }

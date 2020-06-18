@@ -16,9 +16,13 @@
                     <span slot="title">{{ items[0].title }}</span>
                 </el-menu-item>
                 <el-menu-item :index="items[1].index" :key="items[1].index">
+                    <i :class="items[1].icon"></i>
+                    <span slot="title" >{{ items[1].title }}</span>
+                </el-menu-item>
+                <el-menu-item :index="items[2].index" :key="items[2].index">
                     <div @mouseenter="onMouseOver" @mouseout="onMouseOut">
-                        <i :class="items[1].icon"></i>
-                        <span slot="title" >{{ items[1].title }}</span>
+                        <i :class="items[2].icon"></i>
+                        <span slot="title" >{{ items[2].title }}</span>
                     </div>
                 </el-menu-item>
                 <el-menu-item >
@@ -39,13 +43,18 @@ export default {
             items: [
                 {
                     icon: 'el-icon-lx-home',
-                    index: 'dashboard',
-                    title: '折线图'
+                    index: '/dashboard',
+                    title: '帖子'
                 },
                 {
-                    icon: 'el-icon-lx-redpacket_fill',
+                    icon: 'el-icon-lx-calendar',
+                    index: '/article',
+                    title: '发帖'
+                },
+                {
+                    icon: 'el-icon-lx-emoji',
                     index: '/donate',
-                    title: '支持作者'
+                    title: '联系作者'
                 }
             ]
         };

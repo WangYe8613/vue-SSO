@@ -4,7 +4,7 @@ module.exports = {
     productionSourceMap: false,
     devServer: {
         disableHostCheck: true,
-        host: '172.24.32.50',   // 设置运行ip
+        host: '172.24.32.33',   // 设置运行ip
         port: 8090,             // 设置运行端口号
     }
 }

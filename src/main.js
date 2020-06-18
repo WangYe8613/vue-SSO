@@ -54,7 +54,7 @@ router.beforeEach((to, from, next) => {
             // 但是由于当前的cookies中的authToken为空，即未登录状态，所以重定向到另一个vue-SSO项目的http://ip:port/#/callback路由，看另一个vue-SSO系统中是否已经登录
             // 第一个ip:port要写另外一个vus-SSO部署的ip:port
             // 第二个ip:port要写当前vus-SSO部署的ip:port
-            window.location.href = 'http://ip:port/#/callback/=http://ip:port/=/dashboard';
+            window.location.href = 'http://localhost:8070/#/callback/=http://172.24.32.33:8090/=/dashboard';
         }
     } else if (to.path == '/login') {
         // 如果用户访问的是http://ip:port/#/login，则直接进入登录界面
@@ -76,6 +76,15 @@ router.beforeEach((to, from, next) => {
         // 根据回调url，重定向回另一个vue-SSO，带上token和用户名（token和用户名可能为空，即当前vue-SSO系统中也没有登录）
         var url_back = ip + "#" + router + "/=" + token + "/" + name;
         window.location.href = url_back;
+    } else if (to.path == '/article') {    // 富文本编辑器页面
+        // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
+        if (navigator.userAgent.indexOf('MSIE') > -1 && to.path === '/editor') {
+            Vue.prototype.$alert('vue-quill-editor组件不兼容IE10及以下浏览器，请使用更高版本的浏览器查看', '浏览器不兼容通知', {
+                confirmButtonText: '确定'
+            });
+        } else {
+            next();
+        }
     }
 });
 
